@@ -105,6 +105,44 @@ st.markdown("""
         background: linear-gradient(90deg, transparent, #4ECDC4, transparent);
         margin: 1.5rem 0;
     }
+
+    /* ─── Custom Navigation Style (Radio Button Override) ─── */
+    
+    /* Hide the default radio circles completely */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label > div:first-of-type {
+        display: none !important;
+    }
+    
+    /* Container for the nav items */
+    [data-testid="stSidebar"] div[role="radiogroup"] {
+        gap: 0.5rem;
+    }
+    
+    /* Menu item text styling */
+    [data-testid="stSidebar"] div[role="radiogroup"] label p {
+        font-size: 1.4rem !important;
+        font-weight: 600 !important;
+        color: rgba(255, 255, 255, 0.5) !important;
+        margin: 0;
+        padding: 5px 10px;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    /* Hover state */
+    [data-testid="stSidebar"] div[role="radiogroup"] label:hover p {
+        color: rgba(255, 255, 255, 0.9) !important;
+        transform: translateX(5px);
+    }
+    
+    /* Active/Checked state */
+    /* Streamlit changes background or font color on checked, we use important to override */
+    [data-testid="stSidebar"] div[role="radiogroup"] label[data-checked="true"] p,
+    [data-testid="stSidebar"] div[role="radiogroup"] div[aria-checked="true"] p,
+    [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p {
+        color: #ffffff !important;
+        transform: translateX(8px);
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
 </style>
 """, unsafe_allow_html=True)
 
