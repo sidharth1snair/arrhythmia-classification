@@ -4,7 +4,7 @@ Deep Learning pipeline for ECG arrhythmia classification, synthetic generation, 
 Built using the MIT-BIH Arrhythmia Database, this project transforms 1D ECG signals into 2D Continuous Wavelet Transform (CWT) spectrograms for advanced image-based analysis.
 
 ##  Live Demo
-Access the deployed Streamlit dashboard here: ** https://arrhythmia-classification-8dkxe7aq4sn8edpfmzqi8x.streamlit.app/ **
+Access the deployed Streamlit dashboard here: **https://arrhythmia-classification-8dkxe7aq4sn8edpfmzqi8x.streamlit.app/**
 
 ---
 
