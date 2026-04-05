@@ -219,16 +219,15 @@ with st.sidebar:
     
     st.markdown("---")
     
+    # ── Minimalist Footer Profile ──
     st.markdown("""
-    <div style='background-color: rgba(78, 205, 196, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid #4ECDC4;'>
-        <p style='margin:0; font-size: 0.8rem; color: #e0e0e0;'><strong>System Status</strong></p>
-        <p style='margin:0; font-size: 0.8rem; color: #4ECDC4;'>🟢 All Models Loaded</p>
-        <p style='margin:0; font-size: 0.8rem; color: #4ECDC4;'>🟢 Streamlit Connected</p>
+    <div style='text-align: center; margin-top: 20px;'>
+        <p style='color: #888; font-size: 0.8rem; margin: 0;'>POWERED BY</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg" width="100" style="margin-top: 5px; opacity: 0.8;">
+        <br><br>
+        <p style='color: #666; font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;'>v1.0.0 Release</p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
-    st.caption("v1.0 · Built with TensorFlow")
 
 # ═══════════════════════════════════════════════════════════════
 #  PAGE 1: CLASSIFICATION
