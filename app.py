@@ -441,56 +441,159 @@ elif "About" in page:
     st.title("About CardioVision AI")
     st.markdown("---")
 
+    # ── Hero stats row ──
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Models Trained", "7")
+    c2.metric("Arrhythmia Classes", "5")
+    c3.metric("Dataset", "109,446")
+    c4.metric("Reviews", "3")
+
+    st.markdown("---")
+
+    # ── Problem Statement ──
+    st.markdown("## 🎯 Problem Statement")
     st.markdown("""
-    ## Problem Statement
-    Cardiac arrhythmias are irregular heartbeat patterns that can lead to serious health complications 
-    including stroke, heart failure, and sudden cardiac arrest. Early and accurate detection is critical 
-    for timely medical intervention.
+    Cardiac arrhythmias are irregular heartbeat patterns that can lead to **stroke**, 
+    **heart failure**, and **sudden cardiac arrest**. The World Health Organization estimates 
+    that cardiovascular diseases are the leading cause of death globally.
 
-    This project applies **deep learning** to automatically classify ECG signals into 5 arrhythmia 
-    categories defined by the MIT-BIH standard.
-
-    ---
-
-    ## Dataset
-    - **Source**: MIT-BIH Arrhythmia Database (PhysioNet)
-    - **Format**: 1D ECG signals (187 timesteps) converted to 2D CWT spectrograms
-    - **Classes**: Normal (N), Supraventricular (S), Ventricular (V), Fusion (F), Unknown (Q)
-    - **Transformation**: Continuous Wavelet Transform (CWT) using Mexican Hat wavelet
-
-    ---
-
-    ## Models Used
-
-    | Review | Model | Purpose |
-    |--------|-------|---------|
-    | R1 | Baseline MLP | Flat signal classification |
-    | R1 | 1D CNN | Temporal feature extraction |
-    | R2 | ResNet50 (Fine-tuned) | CWT image classification |
-    | R2 | LSTM + Attention | Sequential feature modeling |
-    | R2 | GRU / BiLSTM | Temporal sequence analysis |
-    | R3 | Convolutional Autoencoder | Latent representation & anomaly detection |
-    | R3 | DCGAN | Synthetic ECG generation |
-
-    ---
-
-    ## Deployment Features
-
-    | Feature | Description |
-    |---------|-------------|
-    | 🔍 Classification | Upload CWT image or raw CSV signal for prediction |
-    | 📊 Batch Prediction | Classify hundreds of heartbeats with distribution charts |
-    | 🧬 Generation | Synthesize new ECG images via DCGAN |
-    | 🪞 Reconstruction | Autoencoder-based anomaly detection via MSE |
-    | 📥 Downloads | Export generated images and batch results |
-    | 🧪 Sample Data | Built-in demo signal for instant testing |
-
-    ---
-
-    ## Tech Stack
-    `TensorFlow` · `Keras` · `Streamlit` · `OpenCV` · `PyWavelets` · `Scikit-learn` · `Matplotlib`
-
-    ---
-
-    *Built as part of the 24AI636 Deep Learning Mini-Project (MTech AI, 2026)*
+    This project applies **deep learning** to automatically classify ECG signals into 
+    5 arrhythmia categories defined by the **AAMI (Association for the Advancement of Medical 
+    Instrumentation)** standard, using the MIT-BIH Arrhythmia Database.
     """)
+
+    st.markdown("---")
+
+    # ── Data Pipeline ──
+    st.markdown("## 🔬 Data Pipeline")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("""
+        #### 1️⃣ Raw Signal
+        - MIT-BIH PhysioNet database
+        - 187 timesteps per heartbeat
+        - 109,446 total samples
+        - 5 imbalanced classes
+        """)
+    with col2:
+        st.markdown("""
+        #### 2️⃣ CWT Transform
+        - Mexican Hat (Ricker) wavelet
+        - 127 frequency scales
+        - Time-frequency representation
+        - Viridis colormap encoding
+        """)
+    with col3:
+        st.markdown("""
+        #### 3️⃣ Classification
+        - ResNet50 fine-tuned backbone
+        - 224×224 RGB input
+        - Softmax over 5 classes
+        - Deployed via Streamlit
+        """)
+
+    st.markdown("---")
+
+    # ── Deployed Models ──
+    st.markdown("## 🧠 Deployed AI Models")
+    
+    col_a, col_b, col_c = st.columns(3)
+    
+    with col_a:
+        st.info("**1️⃣ Arrhythmia Classifier**")
+        st.markdown("""
+        **Architecture**: ResNet-50 (Fine-tuned)
+        **Input**: 224x224 CWT Spectrogram
+        **Output**: 5-class Softmax
+        """)
+        
+    with col_b:
+        st.success("**2️⃣ ECG Generator**")
+        st.markdown("""
+        **Architecture**: Deep Convolutional GAN
+        **Input**: 128-dim Latent Vector
+        **Output**: 64x64 CWT Spectrogram
+        """)
+
+    with col_c:
+        st.warning("**3️⃣ Anomaly Detector**")
+        st.markdown("""
+        **Architecture**: Convolutional Autoencoder
+        **Input/Output**: 64x64 CWT Spectrogram
+        **Metric**: Mean Squared Error (MSE)
+        """)
+
+    st.markdown("---")
+
+    # ── Class Distribution ──
+    st.markdown("## 📊 Class Distribution (MIT-BIH)")
+    class_data = pd.DataFrame({
+        'Class': ['Normal (N)', 'Supraventricular (S)', 'Ventricular (V)', 'Fusion (F)', 'Unknown (Q)'],
+        'Train Samples': [72471, 2223, 5788, 641, 6431],
+        'Color': ['#2ecc71', '#3498db', '#e74c3c', '#f39c12', '#9b59b6']
+    })
+
+    fig, ax = plt.subplots(figsize=(8, 3.5))
+    bars = ax.barh(class_data['Class'], class_data['Train Samples'], color=class_data['Color'], edgecolor='none', height=0.6)
+    ax.set_xlabel('Number of Samples', fontsize=11)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    for bar, val in zip(bars, class_data['Train Samples']):
+        ax.text(bar.get_width() + 500, bar.get_y() + bar.get_height()/2, f'{val:,}', va='center', fontsize=10)
+    plt.tight_layout()
+    st.pyplot(fig)
+
+    st.markdown("---")
+
+    # ── Deployment Features ──
+    st.markdown("## 🚀 Deployment Features")
+    f1, f2, f3 = st.columns(3)
+    with f1:
+        st.markdown("""
+        #### 🔍 Classification
+        Upload CWT images or raw CSV signals 
+        for instant arrhythmia prediction with 
+        confidence scores.
+        """)
+        st.markdown("""
+        #### 🧬 Generation
+        Synthesize new ECG spectrograms 
+        using DCGAN with auto-classification.
+        """)
+    with f2:
+        st.markdown("""
+        #### 📊 Batch Prediction
+        Classify hundreds of heartbeats at once 
+        with bar/pie chart distribution 
+        and CSV export.
+        """)
+        st.markdown("""
+        #### 🪞 Reconstruction
+        Autoencoder-based anomaly detection 
+        through reconstruction MSE analysis.
+        """)
+    with f3:
+        st.markdown("""
+        #### 📥 Downloads
+        Export generated synthetic images 
+        as PNG and batch results as CSV.
+        """)
+        st.markdown("""
+        #### 🧪 Sample Data
+        Built-in demo signal for instant 
+        testing without file uploads.
+        """)
+
+    st.markdown("---")
+
+    # ── Tech Stack ──
+    st.markdown("## 🛠️ Tech Stack")
+    t1, t2, t3, t4 = st.columns(4)
+    t1.markdown("**Deep Learning**\n\nTensorFlow · Keras")
+    t2.markdown("**Signal Processing**\n\nPyWavelets · OpenCV")
+    t3.markdown("**Visualization**\n\nMatplotlib · Streamlit")
+    t4.markdown("**Data Science**\n\nPandas · Scikit-learn")
+
+    st.markdown("---")
+    st.markdown("*Built as part of the **24AI636 Deep Learning Mini-Project** · MTech AI, 2026*")
+
