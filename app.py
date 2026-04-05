@@ -251,7 +251,6 @@ with st.sidebar:
         "Classification",
         "Batch Prediction",
         "Synthetic Gen.",
-        "Anomaly Det.",
         "About Project"
     ], label_visibility="collapsed")
     
@@ -450,45 +449,7 @@ elif "Generation" in page:
                             key=f"dl_{i}"
                         )
 
-# ═══════════════════════════════════════════════════════════════
-#  PAGE 4: RECONSTRUCTION
-# ═══════════════════════════════════════════════════════════════
-elif "Reconstruction" in page:
-    st.title("Autoencoder Reconstruction")
-    st.markdown("Compress and reconstruct ECG images to measure reconstruction error. High error signals potential anomalies.")
-    st.markdown("---")
 
-    autoencoder = load_model(AUTOENCODER_PATH)
-
-    if autoencoder is None:
-        st.error("Autoencoder model not found. Place `autoencoder.keras` in the app directory.")
-    else:
-        uploaded = st.file_uploader("Upload a CWT spectrogram image", type=["png", "jpg", "jpeg"], key="ae")
-
-        if uploaded:
-            image = Image.open(uploaded)
-            img = image.resize((64, 64)).convert("RGB")
-            arr = np.array(img).astype(np.float32) / 255.0
-            inp = np.expand_dims(arr, 0)
-
-            if st.button("Reconstruct"):
-                with st.spinner("Reconstructing..."):
-                    recon = autoencoder.predict(inp, verbose=0)[0]
-                    recon = np.clip(recon, 0, 1)
-                    mse = float(np.mean((arr - recon) ** 2))
-
-                    col1, col2 = st.columns(2, gap="large")
-                    with col1:
-                        st.image(arr, caption="Original", use_container_width=True)
-                    with col2:
-                        st.image(recon, caption="Reconstructed", use_container_width=True)
-
-                    st.metric("Reconstruction Error (MSE)", f"{mse:.6f}")
-
-                    if mse > 0.05:
-                        st.warning("⚠️ High reconstruction error — possible anomalous pattern detected.")
-                    else:
-                        st.success("✅ Low reconstruction error — pattern is consistent with trained distributions.")
 
 # ═══════════════════════════════════════════════════════════════
 #  PAGE 5: ABOUT
@@ -499,7 +460,7 @@ elif "About" in page:
 
     # ── Hero stats row ──
     c1, c2, c3 = st.columns(3)
-    c1.metric("Deployed Models", "3")
+    c1.metric("Deployed Models", "2")
     c2.metric("Arrhythmia Classes", "5")
     c3.metric("Dataset Size", "109,446")
 
@@ -551,7 +512,7 @@ elif "About" in page:
     # ── Deployed Models ──
     st.markdown("## Deployed Architecture")
     
-    col_a, col_b, col_c = st.columns(3)
+    col_a, col_b = st.columns(2)
     
     with col_a:
         st.info("**Arrhythmia Classifier**")
@@ -567,14 +528,6 @@ elif "About" in page:
         **Type**: Deep Convolutional GAN
         **Input**: 128-dim Latent Vector
         **Output**: 64x64 CWT Spectrogram
-        """)
-
-    with col_c:
-        st.warning("**Anomaly Detector**")
-        st.markdown("""
-        **Type**: Conv. Autoencoder
-        **Domain**: 64x64 Representation
-        **Metric**: Mean Squared Error
         """)
 
     st.markdown("---")
@@ -598,40 +551,40 @@ elif "About" in page:
     st.markdown("---")
 
     # ── Deployment Features ──
-    st.markdown("## 🚀 Deployment Features")
+    st.markdown("##  Deployment Features")
     f1, f2, f3 = st.columns(3)
     with f1:
         st.markdown("""
-        #### 🔍 Classification
+        ####  Classification
         Upload CWT images or raw CSV signals 
         for instant arrhythmia prediction with 
         confidence scores.
         """)
         st.markdown("""
-        #### 🧬 Generation
+        ####  Generation
         Synthesize new ECG spectrograms 
         using DCGAN with auto-classification.
         """)
     with f2:
         st.markdown("""
-        #### 📊 Batch Prediction
+        ####  Batch Prediction
         Classify hundreds of heartbeats at once 
         with bar/pie chart distribution 
         and CSV export.
         """)
         st.markdown("""
-        #### 🪞 Reconstruction
+        ####  Reconstruction
         Autoencoder-based anomaly detection 
         through reconstruction MSE analysis.
         """)
     with f3:
         st.markdown("""
-        #### 📥 Downloads
+        ####  Downloads
         Export generated synthetic images 
         as PNG and batch results as CSV.
         """)
         st.markdown("""
-        #### 🧪 Sample Data
+        ####  Sample Data
         Built-in demo signal for instant 
         testing without file uploads.
         """)
