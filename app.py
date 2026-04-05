@@ -248,11 +248,11 @@ with st.sidebar:
     
     st.markdown("<p style='font-size: 0.85rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;'>Navigation</p>", unsafe_allow_html=True)
     page = st.radio("", [
-        "🔍  Classification",
-        "📊  Batch Prediction",
-        "🧬  Synthetic Generation",
-        "🪞  Anomaly Detection",
-        "ℹ️  About Project"
+        "Classification",
+        "Batch Prediction",
+        "Synthetic Gen.",
+        "Anomaly Det.",
+        "About Project"
     ], label_visibility="collapsed")
     
     st.markdown("---")
@@ -505,83 +505,80 @@ elif "About" in page:
 
     st.markdown("---")
 
-    # ── Problem Statement ──
-    st.markdown("## 🎯 Problem Statement")
+    # ── Project Overview ──
+    st.markdown("## Project Overview")
     st.markdown("""
-    Cardiac arrhythmias are irregular heartbeat patterns that can lead to **stroke**, 
-    **heart failure**, and **sudden cardiac arrest**. The World Health Organization estimates 
-    that cardiovascular diseases are the leading cause of death globally.
+    This application is an end-to-end deep learning pipeline for analyzing electrocardiogram (ECG) data. 
+    It processes 1D temporal signals into Continuous Wavelet Transform (CWT) spectrograms to perform 
+    image-based arrhythmia classification via transfer learning architectures.
 
-    This project applies **deep learning** to automatically classify ECG signals into 
-    5 arrhythmia categories defined by the **AAMI (Association for the Advancement of Medical 
-    Instrumentation)** standard, using the MIT-BIH Arrhythmia Database.
+    The system is trained entirely on the MIT-BIH Arrhythmia Database, mapping patient signals into 
+    5 distinct AAMI diagnostic categories.
     """)
 
     st.markdown("---")
 
     # ── Data Pipeline ──
-    st.markdown("## 🔬 Data Pipeline")
+    st.markdown("## Data Pipeline")
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
-        #### 1️⃣ Raw Signal
-        - MIT-BIH PhysioNet database
-        - 187 timesteps per heartbeat
-        - 109,446 total samples
-        - 5 imbalanced classes
+        #### 1. Raw Signal
+        - MIT-BIH PhysioNet DB
+        - 187 timesteps
+        - 109,446 samples
+        - 5 primary classes
         """)
     with col2:
         st.markdown("""
-        #### 2️⃣ CWT Transform
-        - Mexican Hat (Ricker) wavelet
+        #### 2. CWT Transform
+        - Mexican Hat wavelet
         - 127 frequency scales
-        - Time-frequency representation
-        - Viridis colormap encoding
+        - 2D time-frequency mapping
+        - Viridis encoding
         """)
     with col3:
         st.markdown("""
-        #### 3️⃣ Classification
-        - ResNet50 fine-tuned backbone
-        - 224×224 RGB input
-        - Softmax over 5 classes
-        - Deployed via Streamlit
+        #### 3. Classification
+        - ResNet-50 backbone
+        - 224×224 RGB tensor
+        - Softmax mapping
+        - Streamlit endpoint
         """)
 
     st.markdown("---")
 
     # ── Deployed Models ──
-    st.markdown("## 🧠 Deployed AI Models")
+    st.markdown("## Deployed Architecture")
     
     col_a, col_b, col_c = st.columns(3)
     
     with col_a:
-        st.info("**1️⃣ Arrhythmia Classifier**")
+        st.info("**Arrhythmia Classifier**")
         st.markdown("""
-        **Architecture**: ResNet-50 (Fine-tuned)
+        **Type**: ResNet-50 (Fine-tuned)
         **Input**: 224x224 CWT Spectrogram
-        **Output**: 5-class Softmax
+        **Output**: 5-class Distribution
         """)
         
     with col_b:
-        st.success("**2️⃣ ECG Generator**")
+        st.success("**ECG Generator**")
         st.markdown("""
-        **Architecture**: Deep Convolutional GAN
+        **Type**: Deep Convolutional GAN
         **Input**: 128-dim Latent Vector
         **Output**: 64x64 CWT Spectrogram
         """)
 
     with col_c:
-        st.warning("**3️⃣ Anomaly Detector**")
+        st.warning("**Anomaly Detector**")
         st.markdown("""
-        **Architecture**: Convolutional Autoencoder
-        **Input/Output**: 64x64 CWT Spectrogram
-        **Metric**: Mean Squared Error (MSE)
+        **Type**: Conv. Autoencoder
+        **Domain**: 64x64 Representation
+        **Metric**: Mean Squared Error
         """)
 
     st.markdown("---")
-
-    # ── Class Distribution ──
-    st.markdown("## 📊 Class Distribution (MIT-BIH)")
+    st.markdown("## Class Distribution (MIT-BIH)")
     class_data = pd.DataFrame({
         'Class': ['Normal (N)', 'Supraventricular (S)', 'Ventricular (V)', 'Fusion (F)', 'Unknown (Q)'],
         'Train Samples': [72471, 2223, 5788, 641, 6431],
