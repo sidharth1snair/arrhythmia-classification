@@ -1,14 +1,14 @@
-# 🫀 CardioVision AI — ECG Arrhythmia Detection & Synthesis
+#  CardioVision AI — ECG Arrhythmia Detection & Synthesis
 
 Deep Learning pipeline for ECG arrhythmia classification, synthetic generation, and anomaly detection. 
 Built using the MIT-BIH Arrhythmia Database, this project transforms 1D ECG signals into 2D Continuous Wavelet Transform (CWT) spectrograms for advanced image-based analysis.
 
-## 🚀 Live Demo
+##  Live Demo
 Access the deployed Streamlit dashboard here: ** https://arrhythmia-classification-8dkxe7aq4sn8edpfmzqi8x.streamlit.app/ **
 
 ---
 
-## 🎯 Project Overview
+##  Project Overview
 Cardiac arrhythmias are irregular heartbeat patterns that can lead to serious health complications. This project applies various deep learning architectures to automatically classify ECG signals into 5 continuous arrhythmia categories defined by the AAMI standard.
 
 ### Dataset Features (MIT-BIH)
@@ -23,7 +23,7 @@ Cardiac arrhythmias are irregular heartbeat patterns that can lead to serious he
 
 ---
 
-## 🧠 Model Evolution & Architecture
+##  Model Evolution & Architecture
 
 Throughout the development of this project, several models were tested and evaluated to find the best approach for signal analysis.
 
@@ -50,7 +50,7 @@ Expanded the scope beyond basic classification to include synthetic data generat
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 - **Deep Learning**: TensorFlow, Keras
 - **Signal Processing**: PyWavelets, OpenCV
 - **Data Science**: Pandas, NumPy, Scikit-learn
@@ -58,7 +58,7 @@ Expanded the scope beyond basic classification to include synthetic data generat
 
 ---
 
-## 💻 Local Setup & Deployment
+##  Local Setup & Deployment
 
 1. **Clone the repository:**
    ```bash
