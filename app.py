@@ -198,18 +198,37 @@ def array_to_png_bytes(arr):
 
 # ─── Sidebar ───────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🫀 CardioVision AI")
+    st.markdown("""
+    <div style='text-align: center; padding-bottom: 20px;'>
+        <h1 style='font-size: 2.2rem; margin-bottom: 0;'>🫀</h1>
+        <h2 style='font-size: 1.5rem; margin-top: 0; background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>CardioVision AI</h2>
+        <p style='color: #888; font-size: 0.9rem; margin-top: -10px;'>Arrhythmia Analysis Suite</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.markdown("---")
+    
+    st.markdown("<p style='font-size: 0.85rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;'>Navigation</p>", unsafe_allow_html=True)
     page = st.radio("", [
         "🔍  Classification",
         "📊  Batch Prediction",
-        "🧬  Generation",
-        "🪞  Reconstruction",
-        "ℹ️  About"
+        "🧬  Synthetic Generation",
+        "🪞  Anomaly Detection",
+        "ℹ️  About Project"
     ], label_visibility="collapsed")
+    
     st.markdown("---")
-    st.caption("ECG Arrhythmia Analysis Suite")
-    st.caption("Built with TensorFlow & Streamlit")
+    
+    st.markdown("""
+    <div style='background-color: rgba(78, 205, 196, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid #4ECDC4;'>
+        <p style='margin:0; font-size: 0.8rem; color: #e0e0e0;'><strong>System Status</strong></p>
+        <p style='margin:0; font-size: 0.8rem; color: #4ECDC4;'>🟢 All Models Loaded</p>
+        <p style='margin:0; font-size: 0.8rem; color: #4ECDC4;'>🟢 Streamlit Connected</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    st.caption("v1.0 · Built with TensorFlow")
 
 # ═══════════════════════════════════════════════════════════════
 #  PAGE 1: CLASSIFICATION
@@ -442,11 +461,10 @@ elif "About" in page:
     st.markdown("---")
 
     # ── Hero stats row ──
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Models Trained", "7")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Deployed Models", "3")
     c2.metric("Arrhythmia Classes", "5")
-    c3.metric("Dataset", "109,446")
-    c4.metric("Reviews", "3")
+    c3.metric("Dataset Size", "109,446")
 
     st.markdown("---")
 
