@@ -1,0 +1,9 @@
+streamlit
+tensorflow==2.18.0
+matplotlib
+Pillow
+pandas
+scikit-learn
+opencv-python-headless
+PyWavelets
+gdown

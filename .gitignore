@@ -1,0 +1,21 @@
+# Model weights (downloaded from Google Drive at runtime)
+*.keras
+*.h5
+
+# Datasets
+*.csv
+*.zip
+*.png
+mitbih_test.csv/
+dl-r1*.py
+dl-r2*.py
+dl-r3*.py
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# OS
+.DS_Store
+Thumbs.db
