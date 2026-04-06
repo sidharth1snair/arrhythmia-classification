@@ -145,17 +145,22 @@ st.markdown("""
     }
     
     /* Inject Experimental Tools header before the 4th item */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4) {
+        position: relative;
+        margin-top: 45px !important;
+    }
     [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4)::before {
         content: 'EXPERIMENTAL TOOLS';
-        display: block;
-        font-size: 0.85rem;
+        position: absolute;
+        top: -30px;
+        left: 10px;
+        font-size: 0.82rem;
         color: #666;
         text-transform: uppercase;
         letter-spacing: 1px;
-        margin-top: 25px;
-        margin-bottom: 10px;
         font-weight: 700;
         pointer-events: none;
+        white-space: nowrap;
     }
 </style>
 """, unsafe_allow_html=True)
