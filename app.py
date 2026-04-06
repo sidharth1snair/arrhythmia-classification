@@ -144,12 +144,12 @@ st.markdown("""
         text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     }
     
-    /* Inject Experimental Tools header before the 4th item */
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4) {
+    /* Inject Experimental Tools header before the 3rd item */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
         position: relative;
         margin-top: 45px !important;
     }
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4)::before {
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3)::before {
         content: 'EXPERIMENTAL TOOLS';
         position: absolute;
         top: -30px;
@@ -267,7 +267,6 @@ with st.sidebar:
     
     st.markdown("<p style='font-size: 0.85rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;'>Navigation</p>", unsafe_allow_html=True)
     page = st.radio("", [
-        "Home",
         "Classification",
         "Batch Prediction",
         "Synthetic Gen.",
@@ -290,6 +289,13 @@ with st.sidebar:
 #  PAGE 1: CLASSIFICATION
 # ═══════════════════════════════════════════════════════════════
 if "Classification" in page:
+    st.markdown("""
+    <div style='background: linear-gradient(135deg, rgba(255,107,107,0.05) 0%, rgba(78,205,196,0.05) 100%); padding: 15px 20px; border-radius: 10px; border-left: 3px solid #4ECDC4; margin-bottom: 20px;'>
+        <span style='font-size: 1.1rem; color: #4ECDC4; font-weight: 600;'>Welcome to CardioVision AI.</span> &nbsp;
+        <span style='color: #ccc; font-size: 0.95rem;'>Analyze ECG signals using advanced deep learning to instantly diagnose potentially life-threatening arrhythmias.</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.title("Arrhythmia Classification")
     st.markdown("Classify ECG signals into 5 arrhythmia categories using a fine-tuned ResNet50 model.")
     st.markdown("---")
@@ -509,60 +515,4 @@ elif "Anomaly Detection" in page:
                     else:
                         st.success(" Low reconstruction error — pattern is consistent with trained distributions.")
 
-# ═══════════════════════════════════════════════════════════════
-#  PAGE 0: HOME / GUIDE
-# ═══════════════════════════════════════════════════════════════
-elif "Home" in page:
-    st.markdown("""
-    <div style='background: linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(78,205,196,0.1) 100%); padding: 30px; border-radius: 15px; border-left: 4px solid #4ECDC4;'>
-        <h1 style='margin-top: 0;'>Welcome to CardioVision AI! 👋</h1>
-        <p style='font-size: 1.1rem; color: #e0e0e0; margin-bottom: 0;'>
-            This clinical demonstration tool allows you to analyze electrocardiogram (ECG) data 
-            using advanced deep learning to instantly identify potentially life-threatening arrhythmias.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("## How to use this tool")
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    col1, col2 = st.columns(2, gap="large")
-    
-    with col1:
-        st.info("#### 🔍 Single Classification (Clinical)")
-        st.markdown("""
-        Use this tool when you have data for **one specific patient**.
-        1. Upload their raw 1D ECG signal (CSV) or pre-processed CWT image.
-        2. The system instantly analyzes the heartbeat.
-        3. You receive a diagnostic classification alongside a confidence score (e.g. *Ventricular Arrhythmia, 96%*).
-        """)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        st.warning("#### 🧬 Synthetic Generator (Experimental)")
-        st.markdown("""
-        **For researchers and developers**: This tool uses a Generative Adversarial Network (GAN) to generate 
-        completely new, fake ECG images on the fly. We use this to artificially balance and augment training datasets.
-        """)
-        
-    with col2:
-        st.success("#### 📊 Batch Prediction (Clinical)")
-        st.markdown("""
-        Use this tool when analyzing a **large population dataset**.
-        1. Upload a bulk CSV containing hundreds of patient heartbeats.
-        2. The pipeline quickly classifies every signal.
-        3. View beautiful population distribution charts and export the final diagnoses as a spreadsheet.
-        """)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        st.warning("#### 🪞 Anomaly Detection (Experimental)")
-        st.markdown("""
-        **For researchers**: Use an Autoencoder to measure how far an ECG rhythm deviates from "normal". 
-        A high Mean Squared Error (MSE) reconstruction score indicates an anomalous or corrupted signal.
-        """)
-
-    st.markdown("---")
-    st.caption("You can test all features immediately without needing your own files — simply click the **Use Sample Data** buttons within each tool.")
 
