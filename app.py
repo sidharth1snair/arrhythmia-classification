@@ -143,6 +143,20 @@ st.markdown("""
         transform: translateX(8px);
         text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     }
+    
+    /* Inject Experimental Tools header before the 4th item */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4)::before {
+        content: 'EXPERIMENTAL TOOLS';
+        display: block;
+        font-size: 0.85rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 25px;
+        margin-bottom: 10px;
+        font-weight: 700;
+        pointer-events: none;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -248,11 +262,11 @@ with st.sidebar:
     
     st.markdown("<p style='font-size: 0.85rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;'>Navigation</p>", unsafe_allow_html=True)
     page = st.radio("", [
+        "Home",
         "Classification",
         "Batch Prediction",
-        "Synthetic Generation",
-        "Anomaly Detection",
-        "About Project"
+        "Synthetic Gen.",
+        "Anomaly Det."
     ], label_visibility="collapsed")
     
     st.markdown("---")
@@ -491,161 +505,59 @@ elif "Anomaly Detection" in page:
                         st.success(" Low reconstruction error — pattern is consistent with trained distributions.")
 
 # ═══════════════════════════════════════════════════════════════
-#  PAGE 5: ABOUT
+#  PAGE 0: HOME / GUIDE
 # ═══════════════════════════════════════════════════════════════
-elif "About" in page:
-    st.title("About CardioVision AI")
-    st.markdown("---")
-
-    # ── Hero stats row ──
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Deployed Models", "3")
-    c2.metric("Arrhythmia Classes", "5")
-    c3.metric("Dataset Size", "109,446")
-
-    st.markdown("---")
-
-    # ── Project Overview ──
-    st.markdown("## Project Overview")
+elif "Home" in page:
     st.markdown("""
-    This application is an end-to-end deep learning pipeline for analyzing electrocardiogram (ECG) data. 
-    It processes 1D temporal signals into Continuous Wavelet Transform (CWT) spectrograms to perform 
-    image-based arrhythmia classification via transfer learning architectures.
+    <div style='background: linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(78,205,196,0.1) 100%); padding: 30px; border-radius: 15px; border-left: 4px solid #4ECDC4;'>
+        <h1 style='margin-top: 0;'>Welcome to CardioVision AI! 👋</h1>
+        <p style='font-size: 1.1rem; color: #e0e0e0; margin-bottom: 0;'>
+            This clinical demonstration tool allows you to analyze electrocardiogram (ECG) data 
+            using advanced deep learning to instantly identify potentially life-threatening arrhythmias.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    The system is trained entirely on the MIT-BIH Arrhythmia Database, mapping patient signals into 
-    5 distinct AAMI diagnostic categories.
-    """)
-
-    st.markdown("---")
-
-    # ── Data Pipeline ──
-    st.markdown("## Data Pipeline")
-    col1, col2, col3 = st.columns(3)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("## How to use this tool")
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2, gap="large")
+    
     with col1:
+        st.info("#### 🔍 Single Classification (Clinical)")
         st.markdown("""
-        #### 1. Raw Signal
-        - MIT-BIH PhysioNet DB
-        - 187 timesteps
-        - 109,446 samples
-        - 5 primary classes
-        """)
-    with col2:
-        st.markdown("""
-        #### 2. CWT Transform
-        - Mexican Hat wavelet
-        - 127 frequency scales
-        - 2D time-frequency mapping
-        - Viridis encoding
-        """)
-    with col3:
-        st.markdown("""
-        #### 3. Classification
-        - ResNet-50 backbone
-        - 224×224 RGB tensor
-        - Softmax mapping
-        - Streamlit endpoint
-        """)
-
-    st.markdown("---")
-
-    # ── Deployed Models ──
-    st.markdown("## Deployed Architecture")
-    
-    col_a, col_b, col_c = st.columns(3)
-    
-    with col_a:
-        st.info("**Arrhythmia Classifier**")
-        st.markdown("""
-        **Type**: ResNet-50 (Fine-tuned)
-        **Input**: 224x224 CWT Spectrogram
-        **Output**: 5-class Distribution
+        Use this tool when you have data for **one specific patient**.
+        1. Upload their raw 1D ECG signal (CSV) or pre-processed CWT image.
+        2. The system instantly analyzes the heartbeat.
+        3. You receive a diagnostic classification alongside a confidence score (e.g. *Ventricular Arrhythmia, 96%*).
         """)
         
-    with col_b:
-        st.success("**ECG Generator**")
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        st.warning("#### 🧬 Synthetic Generator (Experimental)")
         st.markdown("""
-        **Type**: Deep Convolutional GAN
-        **Input**: 128-dim Latent Vector
-        **Output**: 64x64 CWT Spectrogram
+        **For researchers and developers**: This tool uses a Generative Adversarial Network (GAN) to generate 
+        completely new, fake ECG images on the fly. We use this to artificially balance and augment training datasets.
         """)
+        
+    with col2:
+        st.success("#### 📊 Batch Prediction (Clinical)")
+        st.markdown("""
+        Use this tool when analyzing a **large population dataset**.
+        1. Upload a bulk CSV containing hundreds of patient heartbeats.
+        2. The pipeline quickly classifies every signal.
+        3. View beautiful population distribution charts and export the final diagnoses as a spreadsheet.
+        """)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
 
-    with col_c:
-        st.warning("**Anomaly Detector**")
+        st.warning("#### 🪞 Anomaly Detection (Experimental)")
         st.markdown("""
-        **Type**: Conv. Autoencoder
-        **Domain**: 64x64 Representation
-        **Metric**: Mean Squared Error
-        """)
-
-    st.markdown("---")
-    st.markdown("## Class Distribution (MIT-BIH)")
-    class_data = pd.DataFrame({
-        'Class': ['Normal (N)', 'Supraventricular (S)', 'Ventricular (V)', 'Fusion (F)', 'Unknown (Q)'],
-        'Train Samples': [72471, 2223, 5788, 641, 6431],
-        'Color': ['#2ecc71', '#3498db', '#e74c3c', '#f39c12', '#9b59b6']
-    })
-
-    fig, ax = plt.subplots(figsize=(8, 3.5))
-    bars = ax.barh(class_data['Class'], class_data['Train Samples'], color=class_data['Color'], edgecolor='none', height=0.6)
-    ax.set_xlabel('Number of Samples', fontsize=11)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    for bar, val in zip(bars, class_data['Train Samples']):
-        ax.text(bar.get_width() + 500, bar.get_y() + bar.get_height()/2, f'{val:,}', va='center', fontsize=10)
-    plt.tight_layout()
-    st.pyplot(fig)
-
-    st.markdown("---")
-
-    # ── Deployment Features ──
-    st.markdown("##  Deployment Features")
-    f1, f2, f3 = st.columns(3)
-    with f1:
-        st.markdown("""
-        ####  Classification
-        Upload CWT images or raw CSV signals 
-        for instant arrhythmia prediction with 
-        confidence scores.
-        """)
-        st.markdown("""
-        ####  Generation
-        Synthesize new ECG spectrograms 
-        using DCGAN with auto-classification.
-        """)
-    with f2:
-        st.markdown("""
-        ####  Batch Prediction
-        Classify hundreds of heartbeats at once 
-        with bar/pie chart distribution 
-        and CSV export.
-        """)
-        st.markdown("""
-        ####  Reconstruction
-        Autoencoder-based anomaly detection 
-        through reconstruction MSE analysis.
-        """)
-    with f3:
-        st.markdown("""
-        ####  Downloads
-        Export generated synthetic images 
-        as PNG and batch results as CSV.
-        """)
-        st.markdown("""
-        ####  Sample Data
-        Built-in demo signal for instant 
-        testing without file uploads.
+        **For researchers**: Use an Autoencoder to measure how far an ECG rhythm deviates from "normal". 
+        A high Mean Squared Error (MSE) reconstruction score indicates an anomalous or corrupted signal.
         """)
 
     st.markdown("---")
-
-    # ── Tech Stack ──
-    st.markdown("## 🛠️ Tech Stack")
-    t1, t2, t3, t4 = st.columns(4)
-    t1.markdown("**Deep Learning**\n\nTensorFlow · Keras")
-    t2.markdown("**Signal Processing**\n\nPyWavelets · OpenCV")
-    t3.markdown("**Visualization**\n\nMatplotlib · Streamlit")
-    t4.markdown("**Data Science**\n\nPandas · Scikit-learn")
-
-    st.markdown("---")
-    st.markdown("*Built as part of the **24AI636 Deep Learning Mini-Project** · MTech AI, 2026*")
+    st.caption("You can test all features immediately without needing your own files — simply click the **Use Sample Data** buttons within each tool.")
 
