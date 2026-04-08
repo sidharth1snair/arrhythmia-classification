@@ -143,25 +143,6 @@ st.markdown("""
         transform: translateX(8px);
         text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     }
-    
-    /* Inject Experimental Tools header before the 3rd item */
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
-        position: relative;
-        margin-top: 45px !important;
-    }
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3)::before {
-        content: 'EXPERIMENTAL TOOLS';
-        position: absolute;
-        top: -30px;
-        left: 10px;
-        font-size: 0.82rem;
-        color: #666;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 700;
-        pointer-events: none;
-        white-space: nowrap;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -265,13 +246,30 @@ with st.sidebar:
     
     st.markdown("---")
     
-    st.markdown("<p style='font-size: 0.85rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;'>Navigation</p>", unsafe_allow_html=True)
-    page = st.radio("", [
-        "Classification",
-        "Batch Prediction",
-        "Synthetic Gen.",
-        "Anomaly Det."
-    ], label_visibility="collapsed")
+    # ── Session state for page navigation ──
+    if "active_page" not in st.session_state:
+        st.session_state.active_page = "Classification"
+    
+    st.markdown("<p style='font-size: 0.85rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;'>Clinical Tools</p>", unsafe_allow_html=True)
+    
+    for p in ["Classification", "Batch Prediction"]:
+        is_active = st.session_state.active_page == p
+        label = f"**{p}**" if is_active else p
+        if st.button(label, key=f"nav_{p}", use_container_width=True):
+            st.session_state.active_page = p
+            st.rerun()
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    with st.expander("🧪 Experimental Tools", expanded=False):
+        for p in ["Synthetic Gen.", "Anomaly Det."]:
+            is_active = st.session_state.active_page == p
+            label = f"**{p}**" if is_active else p
+            if st.button(label, key=f"nav_{p}", use_container_width=True):
+                st.session_state.active_page = p
+                st.rerun()
+    
+    active_page = st.session_state.active_page
     
     st.markdown("---")
     
@@ -288,11 +286,29 @@ with st.sidebar:
 # ═══════════════════════════════════════════════════════════════
 #  PAGE 1: CLASSIFICATION
 # ═══════════════════════════════════════════════════════════════
-if "Classification" in page:
+if active_page == "Classification":
     st.markdown("""
-    <div style='background: linear-gradient(135deg, rgba(255,107,107,0.05) 0%, rgba(78,205,196,0.05) 100%); padding: 15px 20px; border-radius: 10px; border-left: 3px solid #4ECDC4; margin-bottom: 20px;'>
-        <span style='font-size: 1.1rem; color: #4ECDC4; font-weight: 600;'>Welcome to CardioVision AI.</span> &nbsp;
-        <span style='color: #ccc; font-size: 0.95rem;'>Analyze ECG signals using advanced deep learning to instantly diagnose potentially life-threatening arrhythmias.</span>
+    <div style='background: linear-gradient(135deg, rgba(78,205,196,0.07) 0%, rgba(110,142,251,0.07) 100%);
+                padding: 28px 32px; border-radius: 14px; border: 1px solid rgba(78,205,196,0.15); margin-bottom: 28px;'>
+        <p style='font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: #4ECDC4; margin: 0 0 6px 0; font-weight: 700;'>ECG Analysis Platform</p>
+        <h2 style='margin: 0 0 8px 0; font-size: 1.8rem; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;'>CardioVision AI</h2>
+        <p style='color: rgba(255,255,255,0.55); font-size: 1rem; margin: 0 0 22px 0; line-height: 1.6;'>
+            Deep learning-powered arrhythmia detection from raw ECG signals — trained on the MIT-BIH database across 5 AAMI diagnostic classes.
+        </p>
+        <div style='display: flex; gap: 12px; flex-wrap: wrap;'>
+            <div style='background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 180px;'>
+                <p style='color: #4ECDC4; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 4px 0;'>Step 1 — Input</p>
+                <p style='color: rgba(255,255,255,0.6); font-size: 0.85rem; margin: 0; line-height: 1.4;'>Upload a raw CSV signal or CWT spectrogram image from the options below.</p>
+            </div>
+            <div style='background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 180px;'>
+                <p style='color: #4ECDC4; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 4px 0;'>Step 2 — Analyze</p>
+                <p style='color: rgba(255,255,255,0.6); font-size: 0.85rem; margin: 0; line-height: 1.4;'>The ResNet-50 model classifies the heartbeat with a confidence score.</p>
+            </div>
+            <div style='background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 180px;'>
+                <p style='color: #4ECDC4; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 4px 0;'>No files? Try sample</p>
+                <p style='color: rgba(255,255,255,0.6); font-size: 0.85rem; margin: 0; line-height: 1.4;'>Select <strong style='color:#fff;'>Try Sample Data</strong> below to run an instant demonstration.</p>
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -352,7 +368,7 @@ if "Classification" in page:
 # ═══════════════════════════════════════════════════════════════
 #  PAGE 2: BATCH PREDICTION
 # ═══════════════════════════════════════════════════════════════
-elif "Batch" in page:
+elif active_page == "Batch Prediction":
     st.title("Batch Prediction")
     st.markdown("Upload a CSV file with multiple heartbeats and classify all of them at once.")
     st.markdown("---")
@@ -436,7 +452,7 @@ elif "Batch" in page:
 # ═══════════════════════════════════════════════════════════════
 #  PAGE 3: GENERATION
 # ═══════════════════════════════════════════════════════════════
-elif "Generation" in page:
+elif active_page == "Synthetic Gen.":
     st.title("Synthetic ECG Generation")
     st.markdown("Generate synthetic CWT spectrograms from random latent vectors using a trained DCGAN.")
     st.markdown("---")
@@ -478,7 +494,7 @@ elif "Generation" in page:
 # ═══════════════════════════════════════════════════════════════
 #  PAGE 4: RECONSTRUCTION
 # ═══════════════════════════════════════════════════════════════
-elif "Anomaly Detection" in page:
+elif active_page == "Anomaly Det.":
     st.title("Autoencoder Reconstruction")
     st.markdown("Compress and reconstruct ECG images to measure reconstruction error. High error signals potential anomalies.")
     st.markdown("---")
